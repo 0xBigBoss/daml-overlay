@@ -1,0 +1,90 @@
+{
+  "latest": {
+    "version": "2.10.0",
+    "tag": "v2.10.0",
+    "platforms": {
+      "aarch64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
+        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
+        "sha256": "sha256-GiBuSEWlcj3UpfnkyqJ1COmga0u/cwzGs1YbUhQIR64="
+      },
+      "x86_64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
+        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+      },
+      "x86_64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
+        "sha256": "sha256-GiBuSEWlcj3UpfnkyqJ1COmga0u/cwzGs1YbUhQIR64="
+      }
+    }
+  },
+  "2.8.0": {
+    "version": "2.8.0",
+    "tag": "v2.8.0",
+    "platforms": {
+      "aarch64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.8.0/daml-sdk-2.8.0-macos.tar.gz",
+        "sha256": "sha256-XTkHXa/pOKdDXwP/f4XSrBW4qdm+xLuyUOie/9uJM40="
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.8.0/daml-sdk-2.8.0-linux.tar.gz",
+        "sha256": "sha256-ViTAphtGw4hmbQn7r0ZdicmNhlBtKtHqensZYpWuMqA="
+      },
+      "x86_64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.8.0/daml-sdk-2.8.0-macos.tar.gz",
+        "sha256": "sha256-XTkHXa/pOKdDXwP/f4XSrBW4qdm+xLuyUOie/9uJM40="
+      },
+      "x86_64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.8.0/daml-sdk-2.8.0-linux.tar.gz",
+        "sha256": "sha256-ViTAphtGw4hmbQn7r0ZdicmNhlBtKtHqensZYpWuMqA="
+      }
+    }
+  },
+  "2.7.3": {
+    "version": "2.7.3",
+    "tag": "v2.7.3",
+    "platforms": {
+      "aarch64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.7.3/daml-sdk-2.7.3-macos.tar.gz",
+        "sha256": "sha256-ETeSCEQwXddKt/Km9ZmC7Z8QFAs69Po/h2/TvDXjbo0="
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.7.3/daml-sdk-2.7.3-linux.tar.gz",
+        "sha256": "sha256-uT8hKKOFk7v6e9woZ934Sr/k4xpL1ZDHdhwmk8TZcV0="
+      },
+      "x86_64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.7.3/daml-sdk-2.7.3-macos.tar.gz",
+        "sha256": "sha256-ETeSCEQwXddKt/Km9ZmC7Z8QFAs69Po/h2/TvDXjbo0="
+      },
+      "x86_64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.7.3/daml-sdk-2.7.3-linux.tar.gz",
+        "sha256": "sha256-uT8hKKOFk7v6e9woZ934Sr/k4xpL1ZDHdhwmk8TZcV0="
+      }
+    }
+  },
+  "2.10.0": {
+    "version": "2.10.0",
+    "tag": "v2.10.0",
+    "platforms": {
+      "aarch64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
+        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
+        "sha256": "sha256-GiBuSEWlcj3UpfnkyqJ1COmga0u/cwzGs1YbUhQIR64="
+      },
+      "x86_64-darwin": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
+        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+      },
+      "x86_64-linux": {
+        "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
+        "sha256": "sha256-GiBuSEWlcj3UpfnkyqJ1COmga0u/cwzGs1YbUhQIR64="
+      }
+    }
+  }
+}

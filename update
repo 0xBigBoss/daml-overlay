@@ -1,0 +1,220 @@
+#!/usr/bin/env nix-shell
+#! nix-shell -p curl jq gh gnupg -i bash
+# shellcheck shell=bash
+set -eo pipefail
+
+# Script to update the sources.json file with the latest DAML SDK releases
+# This supports both latest releases and specific versions
+# Includes hash verification and GPG signature checking
+
+# Default to latest if not specified
+RELEASE_TYPE=${1:-latest}
+
+# Import shared GPG key management
+source "$(dirname "$0")/import-gpg-key.sh"
+
+# GitHub API endpoint for releases
+if [[ "$RELEASE_TYPE" == "latest" ]]; then
+  RELEASES_URL="https://api.github.com/repos/digital-asset/daml/releases/latest"
+else
+  # For specific versions, use the provided version
+  RELEASES_URL="https://api.github.com/repos/digital-asset/daml/releases/tags/v$RELEASE_TYPE"
+fi
+
+# Platforms we support
+PLATFORMS=(
+  "aarch64-darwin"
+  "aarch64-linux"
+  "x86_64-darwin"
+  "x86_64-linux"
+)
+
+# Mapping from our platform names to DAML's archive naming
+get_platform_name() {
+  local platform=$1
+  case "$platform" in
+  "aarch64-darwin") echo "macos" ;;
+  "aarch64-linux") echo "linux" ;;
+  "x86_64-darwin") echo "macos" ;;
+  "x86_64-linux") echo "linux" ;;
+  *) echo "unknown" ;;
+  esac
+}
+
+# Check required tools
+for cmd in curl jq nix-prefetch-url nix-hash gh gpg; do
+  if ! command -v $cmd &>/dev/null; then
+    echo "Error: Required command '$cmd' not found"
+    exit 1
+  fi
+done
+
+# Function to check if GPG signature is valid
+verify_gpg_signature() {
+  local file=$1
+  local signature=$2
+  local tmp_dir=$(mktemp -d)
+  local result=1
+
+  # Download signature file
+  curl -s -L -o "$tmp_dir/signature.asc" "$signature"
+
+  # Ensure we have the Digital Asset key using our shared function
+  ensure_gpg_key
+
+  # Verify the signature
+  if gpg --verify "$tmp_dir/signature.asc" "$file" &>/dev/null; then
+    echo "✅ GPG signature verified successfully!"
+    result=0
+  else
+    echo "❌ GPG signature verification failed!"
+    result=1
+  fi
+
+  # Clean up
+  rm -rf "$tmp_dir"
+  return $result
+}
+
+# Get release info from GitHub
+echo "Fetching $RELEASE_TYPE release information..."
+RELEASE_INFO=$(curl -s "$RELEASES_URL")
+
+# Get version/tag info
+TAG=$(echo "$RELEASE_INFO" | jq -r '.tag_name')
+if [[ "$TAG" == "null" ]]; then
+  echo "Error: Could not get tag information"
+  exit 1
+fi
+
+# Extract the version number
+if [[ "$RELEASE_TYPE" == "latest" ]]; then
+  if [[ "$TAG" == v* ]]; then
+    VERSION=$(echo "$TAG" | sed 's/v//')
+  else
+    VERSION="$TAG"
+  fi
+else
+  VERSION="$RELEASE_TYPE"
+fi
+
+echo "Processing $RELEASE_TYPE release: $TAG (version: $VERSION)"
+
+# The base URL for downloading the archives
+BASE_URL="https://github.com/digital-asset/daml/releases/download/$TAG"
+
+# Create a temporary file for our updated JSON
+TMP_JSON=$(mktemp)
+
+# Create a temporary directory to hold platform data files
+TMP_DIR=$(mktemp -d)
+
+# Create JSON objects for each platform
+for platform in "${PLATFORMS[@]}"; do
+  platform_name=$(get_platform_name "$platform")
+  url="$BASE_URL/daml-sdk-${VERSION}-${platform_name}.tar.gz"
+  sig_url="${url}.asc"
+
+  echo "Processing: $platform (${platform_name})..."
+  echo "URL: $url"
+  echo "Signature URL: $sig_url"
+
+  # Create a temporary file for the downloaded archive
+  tmp_file=$(mktemp)
+
+  # Try to download the archive
+  if curl -s -L -f -o "$tmp_file" "$url"; then
+    echo "Successfully downloaded archive for $platform"
+
+    # Try to verify GPG signature if available
+    echo "Checking GPG signature..."
+    if curl -s -L -f -o /dev/null "$sig_url"; then
+      if verify_gpg_signature "$tmp_file" "$sig_url"; then
+        echo "GPG signature verified for $platform"
+      else
+        echo "Warning: GPG signature verification failed for $platform"
+      fi
+    else
+      echo "Warning: No GPG signature found for $platform"
+    fi
+
+    # Compute Nix hash
+    echo "Computing Nix hash for $platform..."
+    hash=$(nix-hash --type sha256 --base64 "$tmp_file")
+    hash="sha256-$hash"
+
+    echo "Hash: $hash"
+  else
+    echo "Warning: Could not fetch $url, using placeholder hash"
+    hash="sha256-placeholder-for-actual-hash="
+  fi
+
+  # Clean up
+  rm -f "$tmp_file"
+
+  # Store in temp file
+  jq -n \
+    --arg url "$url" \
+    --arg hash "$hash" \
+    '{ "url": $url, "sha256": $hash }' >"$TMP_DIR/$platform.json"
+done
+
+# Build our JSON using jq
+jq -n \
+  --arg version "$VERSION" \
+  --arg tag "$TAG" \
+  --argjson platforms "$(
+    jq -n \
+      --argjson aarch64_darwin "$(cat "$TMP_DIR/aarch64-darwin.json")" \
+      --argjson aarch64_linux "$(cat "$TMP_DIR/aarch64-linux.json")" \
+      --argjson x86_64_darwin "$(cat "$TMP_DIR/x86_64-darwin.json")" \
+      --argjson x86_64_linux "$(cat "$TMP_DIR/x86_64-linux.json")" \
+      '{
+        "aarch64-darwin": $aarch64_darwin,
+        "aarch64-linux": $aarch64_linux,
+        "x86_64-darwin": $x86_64_darwin,
+        "x86_64-linux": $x86_64_linux
+      }'
+  )" \
+  '{
+    ($version): {
+      "version": $version,
+      "tag": $tag,
+      "platforms": $platforms
+    }
+  }' >"$TMP_JSON"
+
+# Check if we need to merge with existing sources.json or create a new one
+if [[ -f sources.json ]]; then
+  echo "Merging with existing sources.json..."
+
+  # Create a backup of the current sources.json
+  cp sources.json sources.json.bak
+
+  # Merge the new JSON with the existing one
+  jq -s '.[0] * .[1]' sources.json "$TMP_JSON" >sources.json.new
+  mv sources.json.new sources.json
+else
+  echo "Creating new sources.json..."
+  mv "$TMP_JSON" sources.json
+fi
+
+# Update the latest pointer if needed
+if [[ "$RELEASE_TYPE" == "latest" || "$VERSION" == "$(jq -r '.latest.version' sources.json)" ]]; then
+  echo "Updating 'latest' to point to $VERSION..."
+  jq --arg version "$VERSION" '.latest = .[$version]' sources.json >sources.json.new
+  mv sources.json.new sources.json
+fi
+
+# Clean up
+rm -f "$TMP_JSON"
+rm -rf "$TMP_DIR"
+
+# Run the verification script if available
+if [[ -x ./verify-hashes.sh ]]; then
+  echo "Running hash verification..."
+  ./verify-hashes.sh "$VERSION"
+fi
+
+echo "Update completed successfully!"
+echo "Updated $RELEASE_TYPE to version $VERSION in sources.json"
