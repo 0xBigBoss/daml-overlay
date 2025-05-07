@@ -5,19 +5,19 @@
     "platforms": {
       "aarch64-darwin": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
-        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+        "sha256": "sha256-0sf9xd4bvmgqg4d34fz1fw23crq2q5apl7ks2wv6qfvyk15xjzbw"
       },
       "aarch64-linux": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
-        "sha256": "sha256-JYJ6pOsJf+m3ymForJO54dVTgLS0lyXoxOA6YOck0KY="
+        "sha256": "sha256-19nh4kkn0fp0qkl2b5xlnj057mg1p69sqs31ravyjzq9xfj7m0i5"
       },
       "x86_64-darwin": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
-        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+        "sha256": "sha256-0sf9xd4bvmgqg4d34fz1fw23crq2q5apl7ks2wv6qfvyk15xjzbw"
       },
       "x86_64-linux": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
-        "sha256": "sha256-JYJ6pOsJf+m3ymForJO54dVTgLS0lyXoxOA6YOck0KY="
+        "sha256": "sha256-19nh4kkn0fp0qkl2b5xlnj057mg1p69sqs31ravyjzq9xfj7m0i5"
       }
     }
   },
@@ -71,19 +71,19 @@
     "platforms": {
       "aarch64-darwin": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
-        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+        "sha256": "sha256-0sf9xd4bvmgqg4d34fz1fw23crq2q5apl7ks2wv6qfvyk15xjzbw"
       },
       "aarch64-linux": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
-        "sha256": "sha256-JYJ6pOsJf+m3ymForJO54dVTgLS0lyXoxOA6YOck0KY="
+        "sha256": "sha256-19nh4kkn0fp0qkl2b5xlnj057mg1p69sqs31ravyjzq9xfj7m0i5"
       },
       "x86_64-darwin": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-macos.tar.gz",
-        "sha256": "sha256-tj0+K1cy/W8lhYHPR7MvZtsWxYg7QBYsErvMw5VNRYM="
+        "sha256": "sha256-0sf9xd4bvmgqg4d34fz1fw23crq2q5apl7ks2wv6qfvyk15xjzbw"
       },
       "x86_64-linux": {
         "url": "https://github.com/digital-asset/daml/releases/download/v2.10.0/daml-sdk-2.10.0-linux.tar.gz",
-        "sha256": "sha256-JYJ6pOsJf+m3ymForJO54dVTgLS0lyXoxOA6YOck0KY="
+        "sha256": "sha256-19nh4kkn0fp0qkl2b5xlnj057mg1p69sqs31ravyjzq9xfj7m0i5"
       }
     }
   }

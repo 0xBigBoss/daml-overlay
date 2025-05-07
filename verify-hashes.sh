@@ -21,7 +21,7 @@ get_file_hash() {
   
   # Get the Nix-compatible hash
   local hash
-  hash=$(nix-hash --type sha256 --base64 "$tmp_file")
+  hash=$(nix-hash --type sha256 --flat --base32 "$tmp_file")
   
   # Clean up
   rm "$tmp_file"

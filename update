@@ -140,7 +140,7 @@ for platform in "${PLATFORMS[@]}"; do
 
     # Compute Nix hash
     echo "Computing Nix hash for $platform..."
-    hash=$(nix-hash --type sha256 --base64 "$tmp_file")
+    hash=$(nix-hash --type sha256 --flat --base32 "$tmp_file")
     hash="sha256-$hash"
 
     echo "Hash: $hash"
